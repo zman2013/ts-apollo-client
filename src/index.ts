@@ -1,37 +1,58 @@
-enum ASCII {
-  Zero = 0x30,
-  Nine = 0x39,
-  Plus = '+'.charCodeAt(0),
-  Minus = '-'.charCodeAt(0),
-  Whitespace = 0x20
+const assert = require('assert').strict
+
+import * as urllib from 'urllib'
+import { RequestOptions } from 'urllib'
+
+export class Meta {
+  constructor(
+    readonly serverUrl: string,
+    readonly appId: string,
+    readonly clusterName: string = 'default',
+    readonly namespaceNames: string[] = ['application'],
+    readonly releaseKey?: string,
+    readonly clientIp?: string
+  ) {}
 }
 
-export default class Solution {
-  static atoi(str: string) {
-    let sign = 1
-    let result = 0
-    let started = false
+export async function getConfig(meta: Meta): Promise<Object> {
+  assert(meta, 'apollo meta is required')
+  const options: RequestOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    },
+    rejectUnauthorized: true,
+    contentType: 'json',
+    dataType: 'json'
+  }
 
-    for (let c of str) {
-      const code = c.charCodeAt(0)
-      if (!started) {
-        if ([ASCII.Plus, ASCII.Minus].includes(code)) {
-          sign = code === ASCII.Minus ? -1 : 1
-          started = true
-        } else if (code >= ASCII.Zero && code < ASCII.Nine) {
-          result = result * 10 + code - ASCII.Zero
-          started = true
-        } else if (code !== ASCII.Whitespace) {
-          break
-        }
-      } else {
-        if (code >= ASCII.Zero && code < ASCII.Nine) {
-          result = result * 10 + code - ASCII.Zero
-        } else {
-          break
-        }
-      }
+  const uris = constructUris(meta)
+  const bundle = await Promise.all(uris.map(uri => urllib.request(uri, options)))
+
+  for (let res of bundle) {
+    console.log(res)
+    // assert 作用，没有抛出异常
+    assert(res.status === 200, 'request apollo config failed, http status: ' + res.status)
+  }
+
+  return mergeConfigs(bundle)
+}
+
+function mergeConfigs(configs: any[]): Object {
+  const confs = configs.map(pl => pl.data)
+  return Object.assign({}, ...confs)
+}
+
+function constructUris(meta: Meta): string[] {
+  const { serverUrl, appId, clusterName, namespaceNames, releaseKey, clientIp } = { ...meta }
+
+  return namespaceNames!.map(n => url(n))
+
+  function url(namespace: string): string {
+    if (clientIp) {
+      return `${serverUrl}/configfiles/json/${appId}/${clusterName}/${namespace}?releaseKey=${releaseKey}&ip=${clientIp}`
+    } else {
+      return `${serverUrl}/configfiles/json/${appId}/${clusterName}/${namespace}?releaseKey=${releaseKey}`
     }
-    return result * sign
   }
 }

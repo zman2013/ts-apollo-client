@@ -109,5 +109,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {}
+  "dependencies": {
+    "urllib": "^2.36.1"
+  }
 }
