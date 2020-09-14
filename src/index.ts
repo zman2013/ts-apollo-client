@@ -1,7 +1,6 @@
 const assert = require('assert').strict
 
 import * as urllib from 'urllib'
-import { RequestOptions } from 'urllib'
 
 export class Meta {
   constructor(
@@ -16,7 +15,7 @@ export class Meta {
 
 export async function getConfig(meta: Meta): Promise<Object> {
   assert(meta, 'apollo meta is required')
-  const options: RequestOptions = {
+  const options: urllib.RequestOptions = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
@@ -46,7 +45,7 @@ function mergeConfigs(configs: any[]): Object {
 function constructUris(meta: Meta): string[] {
   const { serverUrl, appId, clusterName, namespaceNames, releaseKey, clientIp } = { ...meta }
 
-  return namespaceNames!.map(n => url(n))
+  return namespaceNames.map(n => url(n))
 
   function url(namespace: string): string {
     if (clientIp) {
