@@ -1,25 +1,29 @@
 # @zman2013/ts-apollo-client
 
-[![Build Status](https://travis-ci.org/zman/ts-apollo-client.svg)](https://travis-ci.org/zman/ts-apollo-client)
-[![Coverage Status](https://coveralls.io/repos/github/zman/ts-apollo-client/badge.svg)](https://coveralls.io/github/zman/ts-apollo-client)
+[![Build Status](https://github.com/zman2013/ts-apollo-client/workflows/Build%20and%20Release/badge.svg)](https://github.com/zman2013/ts-apollo-client/workflows/Build%20and%20Release/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/zman2013/ts-apollo-client/badge.svg?branch=master)](https://coveralls.io/github/zman2013/ts-apollo-client?branch=master)
 [![npm](https://img.shields.io/npm/v/@zman2013/ts-apollo-client.svg)](https://www.npmjs.com/package/@zman2013/ts-apollo-client/)
 
-> A starter project that makes creating a TypeScript module extremely easy.
-
-## Intro.
-
-This tool is a modification of [typescript-library-starter](https://github.com/alexjoverm/typescript-library-starter), I'm using it to create Node.JS modules.
+> A TypeScript implementation of a client for Apollo(https://github.com/ctripcorp/apollo), the reliable configuration management system.
 
 ## Usage
 
 ```bash
-git clone https://github.com/jacobbubu/typescript-starter.git YOURFOLDERNAME
-cd YOURFOLDERNAME
-npm install
+npm install @zman2013/ts-apollo-client
 ```
 
-**Start coding!** `package.json` and entry files are already set up for you, so don't worry about linking to your main file, typings, etc. Just keep those files with the same name.
+### example1
+```typescript
+import * as client from '@zman2013/ts-apollo-client'
 
-## Features
+const meta = new client.Meta('http://xxx', 'appId')
+client.getConfig(meta).then(json => console.log(json))
+```
+### example2 - multiple namespaces
+```typescript
+import * as client from '@zman2013/ts-apollo-client'
 
-This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind are welcome!
+const meta = new client.Meta('http://xxx', 'appId', ['application', 'common'])
+client.getConfig(meta).then(json => console.log(json))
+```
+

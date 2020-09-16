@@ -15,10 +15,12 @@ describe('Basic Test', () => {
   })
 
   it('two namespaces', done => {
-    const apolloMeta = new client.Meta('http://two', 'mock-appId', 'default', [
-      'application',
-      'common'
-    ])
+    const apolloMeta = new client.Meta(
+      'http://two',
+      'mock-appId',
+      ['application', 'common'],
+      'default'
+    )
 
     client
       .getConfig(apolloMeta)
@@ -42,8 +44,8 @@ describe('Basic Test', () => {
     const apolloMeta = new client.Meta(
       'http://xxx',
       'mock-appId',
-      '',
       ['application'],
+      '',
       '',
       'mock-clientIp'
     )

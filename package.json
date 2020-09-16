@@ -1,6 +1,6 @@
 {
   "name": "@zman2013/ts-apollo-client",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "keywords": [],
   "main": "dist/index.js",
@@ -8,7 +8,7 @@
   "files": [
     "dist"
   ],
-  "author": "zman <manzhiyuan@lixiang.com>",
+  "author": "zman2013 <vsmingren@qq.com>",
   "repository": {
     "type": "git",
     "url": ""

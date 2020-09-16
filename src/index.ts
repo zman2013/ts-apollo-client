@@ -6,8 +6,8 @@ export class Meta {
   constructor(
     readonly serverUrl: string,
     readonly appId: string,
-    readonly clusterName: string = 'default',
     readonly namespaceNames: string[] = ['application'],
+    readonly clusterName: string = 'default',
     readonly releaseKey?: string,
     readonly clientIp?: string
   ) {}
@@ -29,8 +29,6 @@ export async function getConfig(meta: Meta): Promise<Object> {
   const bundle = await Promise.all(uris.map(uri => urllib.request(uri, options)))
 
   for (let res of bundle) {
-    console.log(res)
-    // assert 作用，没有抛出异常
     assert(res.status === 200, 'request apollo config failed, http status: ' + res.status)
   }
 
