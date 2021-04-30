@@ -9,12 +9,12 @@
 ## Usage
 
 ```bash
-npm install @zman2013/ts-apollo-client
+npm install ts-apollo-client
 ```
 
 ### example1
 ```typescript
-import * as client from '@zman2013/ts-apollo-client'
+import * as client from 'ts-apollo-client'
 
 const meta = new client.Meta('http://xxx', 'appId')
 client.getConfig(meta).then(json => console.log(json))
